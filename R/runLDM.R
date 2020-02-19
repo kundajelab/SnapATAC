@@ -78,7 +78,7 @@ runDiffusionMaps <- function(
 	obj = trainRegression(obj);
 
 	message("Epoch: performing normalization ...");
-	obj = normJaccard(obj, obj@regModel[1], obj@regModel[2], obj@regModel[3]);
+	obj = normJaccard(obj, obj@regModel[1], obj@regModel[2]);
 
 	# remove the outliers
 	nmat.cutoff = quantile(obj@jmat@nmat, nmat.outlier);
@@ -205,7 +205,7 @@ runDiffusionMapsExtension <- function(
 	obj2 = runJaccard2(obj2, obj1, input.mat=input.mat);
 
 	message("Epoch: performing normalization ...");
-	obj2 = normJaccard(obj2, obj1@regModel[1], obj1@regModel[2], obj1@regModel[3])			
+	obj2 = normJaccard(obj2, obj1@regModel[1], obj1@regModel[2])			
 
 	# remove the outliers
 	nmat.cutoff = max(obj1@jmat@nmat);

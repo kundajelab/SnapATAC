@@ -134,11 +134,11 @@ trainRegression <- function(obj){
 	emat.tr = .normOVE(b1.tr, b2.tr);
 	# estimate the global scaling factor
 	data = data.frame(x=emat.tr[upper.tri(emat.tr)], y=jmat.tr[upper.tri(jmat.tr)])	
-	model <- lm(y ~ x + I(x^2), data);
-	beta0 = as.numeric(model$coefficients)[1]
-	beta1 = as.numeric(model$coefficients)[2]
-	beta2 = as.numeric(model$coefficients)[3]
-	obj@regModel = c(beta0, beta1, beta2);
+	model <- lm(y ~ 0 + x + I(x^2), data);
+	beta1 = as.numeric(model$coefficients)[1]
+	beta2 = as.numeric(model$coefficients)[2]
+
+	obj@regModel = c(beta1, beta2);
 	rm(jmat.tr);
 	rm(emat.tr);
 	rm(data);
@@ -147,12 +147,12 @@ trainRegression <- function(obj){
 	return(obj)
 }
 
-normJaccard <- function(obj, beta0, beta1, beta2){
+normJaccard <- function(obj, beta1, beta2){
 	b1.te = obj@jmat@p1;
 	b2.te = obj@jmat@p2;
 	jmat.te = obj@jmat@jmat;
 	emat.te = .normOVE(b1.te, b2.te);
-	preds = beta0 + beta1 * emat.te + beta2 * (emat.te ** 2);
+	preds = beta1 * emat.te + beta2 * (emat.te ** 2);
 	nmat.te = jmat.te/preds;
 	obj@jmat@nmat = nmat.te;
 	obj@jmat@norm = TRUE;
