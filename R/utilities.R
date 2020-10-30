@@ -122,8 +122,19 @@ eig_decomp <- function(M, n_eigs, sym = isSymmetric(M)) {
 	return(ee)	
 }
 
-trainRegression <- function(obj){
-	row.covs = log(Matrix::rowSums(obj@bmat)+1,10);		
+trainRegression <- function(obj, input.mat=c("bmat", "pmat", "gmat")){
+        input.mat = match.arg(input.mat);
+        if(input.mat == "bmat"){
+                data.use = obj@bmat;
+        }else if(input.mat == "pmat"){
+                data.use = obj@pmat;
+        }else if(input.mat == "gmat"){
+                data.use = obj@gmat;
+        }else{
+                stop("input.mat does not exist in obj")
+        }
+
+	row.covs = log(Matrix::rowSums(data.use)+1,10);		
 	row.covs.dens <- density(x = row.covs, bw = 'nrd', adjust = 1)
 	sampling_prob <- 1 / (approx(x = row.covs.dens$x, y = row.covs.dens$y, xout = row.covs)$y + .Machine$double.eps)
 	idx.ds <- sort(sample(x = seq(row.covs), size = min(1000, length(row.covs)), prob = sampling_prob));

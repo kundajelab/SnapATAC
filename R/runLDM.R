@@ -75,7 +75,7 @@ runDiffusionMaps <- function(
 	obj = runJaccard2(obj, obj, input.mat=input.mat);
 
 	message("Epoch: fitting regression model ...");
-	obj = trainRegression(obj);
+	obj = trainRegression(obj, input.mat=input.mat);
 
 	message("Epoch: performing normalization ...");
 	obj = normJaccard(obj, obj@regModel[1], obj@regModel[2]);
@@ -220,7 +220,7 @@ runDiffusionMapsExtension <- function(
 		obj2@bmat = data.use.qry
 		obj2@feature = peak.use.qry
 	}else if(input.mat == "pmat"){
-		obj2@peat = data.use.qry
+		obj2@pmat = data.use.qry
 		obj2@peak = peak.use.qry
 	}
 	return(obj2);
